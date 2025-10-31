@@ -70,5 +70,5 @@ jobs:
   sonar-analysis:
     name: Analyse SonarCloud
     needs: [ backend-tests, frontend-tests ]
-    uses: ./.github/workflows/ci-sonar-analysis.yml
+    uses: ./.github/workflows/ci-analysis-quality.yml
     secrets: inherit
