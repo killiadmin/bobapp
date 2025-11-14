@@ -25,14 +25,9 @@ jobs:
         working-directory: back
         run: mvn clean test
 
-      - name: Vérifier rapport JaCoCo
-        run: ls -l back/target/site/jacoco/
-
-      - name: Upload rapport JaCoCo
-        uses: actions/upload-artifact@v4
-        with:
-          name: jacoco-report
-          path: back/target/site/jacoco/jacoco.xml
+      - name: Generate JaCoCo Report
+        working-directory: back
+        run: mvn jacoco:report
 
   frontend-tests:
     name: Front
@@ -52,20 +47,13 @@ jobs:
           cache: npm
           cache-dependency-path: front/package-lock.json
 
-      - name: Installer les dépendances
+      - name: Install dependencies
         run: npm ci
 
-      - name: Lancer les tests Angular avec coverage
-        run: npm run test -- --watch=false --browsers=ChromeHeadless --code-coverage
-
-      - name: Vérifier rapport Karma coverage
-        run: ls -l front/coverage/ || true
-
-      - name: Upload rapport Karma coverage
-        uses: actions/upload-artifact@v4
-        with:
-          name: karma-coverage
-          path: front/coverage/
+      - name: Build and test
+        run: |
+          npm run build --if-present
+          npm run coverage
 
   sonar-analysis:
     name: Analyse SonarCloud
