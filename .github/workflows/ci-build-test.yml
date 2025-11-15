@@ -60,3 +60,19 @@ jobs:
     needs: [ backend-tests, frontend-tests ]
     uses: ./.github/workflows/ci-analysis-quality.yml
     secrets: inherit
+
+  notify-sonar-result:
+    name: Notify SonarCloud Result
+    needs: sonar-analysis
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Check SonarCloud status
+        run: |
+          if [ "${{ needs.sonar-analysis.result }}" == "success" ]; then
+            echo "SONAR_STATUS=success" >> $GITHUB_ENV
+          else
+            echo "SONAR_STATUS=failed" >> $GITHUB_ENV
+            exit 1
+          fi

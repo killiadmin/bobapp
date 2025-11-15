@@ -1,4 +1,3 @@
-
 name: CI - Analyse SonarCloud
 
 on:
@@ -78,3 +77,4 @@ jobs:
             -Dsonar.java.libraries=back/target/*.jar
             -Dsonar.coverage.jacoco.xmlReportPaths=back/target/site/jacoco/jacoco.xml
             -Dsonar.javascript.lcov.reportPaths=front/coverage/bobapp/lcov.info
+            -Dsonar.qualitygate.wait=true
